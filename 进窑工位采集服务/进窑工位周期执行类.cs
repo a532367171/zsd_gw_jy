@@ -26,6 +26,7 @@ namespace 进窑工位采集服务
 
         int ii = 0;
 
+
         public static object locker = new Object();
 
         string Manufacture = ConfigurationManager.AppSettings["生产企业"];
@@ -101,13 +102,7 @@ namespace 进窑工位采集服务
                     //Thread t = new Thread((new ParameterizedThreadStart(OnNumChanged)));
                     //t.Start(rowCol);
                     //read_middle_value = read_old_value;
-                    //read_old_value = read_new_value;
-
-
-
-
-
-
+                    //read_old_value = read_new_value
                     #region 重复判断
                     if (read_new_value == read_state_value)
                     {
@@ -120,7 +115,7 @@ namespace 进窑工位采集服务
                     }
                     #endregion
 
-                    if (ii > 3)
+                    if (ii > 2)
                     {
                         ii = 0;
                         try
