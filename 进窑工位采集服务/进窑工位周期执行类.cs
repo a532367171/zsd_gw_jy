@@ -49,7 +49,7 @@ namespace 进窑工位采集服务
         }
         #endregion
 
-       // #region 事件的申明
+        // #region 事件的申明
 
         //public delegate void NumManipulationHandler1(string x, string y, string z);
 
@@ -89,35 +89,36 @@ namespace 进窑工位采集服务
                 read_new_value = ModBusTCPIPWrapper.Instance.Read();
 
                 #endregion
-
-                if (read_new_value == read_old_value || read_new_value == read_middle_value)
+                if (read_new_value == read_state_value)
                 {
+                    ii++;
                 }
                 else
                 {
-                    //新旧值结构 rowCol = new 新旧值结构();
-                    //rowCol.new_value = read_new_value;
-                    //rowCol.old_value = read_old_value;
-                    //rowCol.middle_value = read_old_value;
-                    //Thread t = new Thread((new ParameterizedThreadStart(OnNumChanged)));
-                    //t.Start(rowCol);
-                    //read_middle_value = read_old_value;
-                    //read_old_value = read_new_value
-                    #region 重复判断
-                    if (read_new_value == read_state_value)
+                    read_state_value = read_new_value;
+                    ii = 0;
+                }
+                #endregion
+
+                if (ii > 3)
+                {
+                    ii = 0;
+                    if (read_new_value == read_old_value || read_new_value == read_middle_value)
                     {
-                        ii++;
                     }
                     else
                     {
-                        read_state_value = read_new_value;
-                        ii = 0;
-                    }
-                    #endregion
+                        //新旧值结构 rowCol = new 新旧值结构();
+                        //rowCol.new_value = read_new_value;
+                        //rowCol.old_value = read_old_value;
+                        //rowCol.middle_value = read_old_value;
+                        //Thread t = new Thread((new ParameterizedThreadStart(OnNumChanged)));
+                        //t.Start(rowCol);
+                        //read_middle_value = read_old_value;
+                        //read_old_value = read_new_value
+                        #region 重复判断
 
-                    if (ii > 2)
-                    {
-                        ii = 0;
+
                         try
                         {
                             #region 保旧值
@@ -174,28 +175,28 @@ namespace 进窑工位采集服务
                             #region 工位判断
                             string strD = "";
 
-                            if (read_new_value_List[0] == "0" && read_new_value_List[5] == "0" && read_old_value_List[5] == "1")
+                            if (read_new_value_List[0] == "0" && read_new_value_List[5] == "1" && read_old_value_List[5] == "0")
                             {
                                 strD = "INSERT INTO CmdGongWei (cGWid,cGWlineCode,cManufacture) VALUES ('08','01','" + Manufacture + "')";
 
                             }
 
-                            if (read_new_value_List[1] == "0" && read_new_value_List[5] == "1" && read_old_value_List[5] == "0")
+                            if (read_new_value_List[1] == "0" && read_new_value_List[5] == "0" && read_old_value_List[5] == "1")
                             {
                                 strD = "INSERT INTO CmdGongWei (cGWid,cGWlineCode,cManufacture) VALUES ('09','01','" + Manufacture + "')";
                             }
 
-                            if (read_new_value_List[2] == "0" && read_new_value_List[5] == "1" && read_old_value_List[5] == "0")
+                            if (read_new_value_List[2] == "0" && read_new_value_List[5] == "0" && read_old_value_List[5] == "1")
                             {
                                 strD = "INSERT INTO CmdGongWei (cGWid,cGWlineCode,cManufacture) VALUES ('09','02','" + Manufacture + "')";
                             }
 
-                            if (read_new_value_List[3] == "0" && read_new_value_List[5] == "1" && read_old_value_List[5] == "0")
+                            if (read_new_value_List[3] == "0" && read_new_value_List[5] == "0" && read_old_value_List[5] == "1")
                             {
                                 strD = "INSERT INTO CmdGongWei (cGWid,cGWlineCode,cManufacture) VALUES  ('09','03','" + Manufacture + "')";
                             }
 
-                            if (read_new_value_List[4] == "0" && read_new_value_List[5] == "1" && read_old_value_List[5] == "0")
+                            if (read_new_value_List[4] == "0" && read_new_value_List[5] == "0" && read_old_value_List[5] == "1")
                             {
                                 strD = "INSERT INTO CmdGongWei (cGWid,cGWlineCode,cManufacture) VALUES  ('09','04','" + Manufacture + "')";
                             }
